@@ -1,0 +1,38 @@
+{
+  "name": "graphql-subscription-express-graphql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaimanza/graphql-subscription-express-graphql.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zaimanza/graphql-subscription-express-graphql/issues"
+  },
+  "homepage": "https://github.com/zaimanza/graphql-subscription-express-graphql#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "concurrently": "^6.2.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.6.0",
+    "graphql-subscriptions": "^1.2.1",
+    "graphql-ws": "^5.5.0",
+    "http": "0.0.1-security",
+    "subscriptions-transport-ws": "^0.9.19",
+    "ws": "^8.2.2"
+  }
+}
