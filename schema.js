@@ -1,6 +1,10 @@
 const {
     buildSchema
 } = require('graphql');
+const {
+    execute,
+    subscribe
+} = require('graphql');
 
 const {
     PubSub
@@ -19,7 +23,6 @@ type Query {
 }
 type Subscription {
     channelAdded: String  
-    # countDown: Int
 }
 `);
 exports.schema = schema;
@@ -35,26 +38,16 @@ const roots = {
             return "hello world!";
         },
     },
-    subscription: {
-        /* eslint no-await-in-loop: "off" */
-        channelAdded: { // create a channelAdded subscription resolver function.
-            subscribe: () => pubsub.asyncIterator('channelAdded') // subscribe to changes in a topic
+    Subscription: {
+        channelAdded: {  // create a channelAdded subscription resolver function.
+            subscribe: () => pubsub.asyncIterator('channelAdded')  // subscribe to changes in a topic
         }
-
-        // countDown: async function* fiveToOne() {
-        //     for (const number of [5, 4, 3, 2, 1]) {
-        //         await sleep(1000); // slow down a bit so user can see the count down on GraphiQL
-        //         yield {
-        //             countDown: number
-        //         };
-        //     }
-        // },
-    },
+    }
 };
 
 exports.roots = roots;
 
 exports.rootValue = {
     hello: roots.Query.hello,
-    countDown: roots.subscription.countDown,
+    channelAdded: roots.Subscription.channelAdded,
 };

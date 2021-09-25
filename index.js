@@ -10,6 +10,10 @@ const {
     subscribe
 } = require('graphql');
 const {
+    graphqlExpress,
+    graphiqlExpress,
+} = require('apollo-server-express');
+const {
     SubscriptionServer
 } = require('subscriptions-transport-ws');
 const {
@@ -36,17 +40,36 @@ app.use(cors({
     credentials: true
 }));
 
+// app.use(
+//     "/graphql",
+//     (req, res) => {
+//         graphqlHTTP({
+//             schema,
+//             rootValue,
+//             graphiql: {
+//                 endpointURL: '/graphql',
+//                 subscriptionEndpoint: subscriptionEndpoint,
+//             },
+//         })(req, res);
+//     });
+
 app.use(
-    "/graphql",
+    '/graphql',
     (req, res) => {
-        graphqlHTTP({
+        graphqlExpress({
             schema,
             rootValue,
-            graphiql: {
-                subscriptionEndpoint: subscriptionEndpoint,
-            },
         })(req, res);
-    });
+    }
+);
+
+app.use(
+    '/graphiql',
+    graphiqlExpress({
+        endpointURL: '/graphql',
+        subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
+    })
+);
 
 const server = createServer(app);
 
@@ -59,13 +82,12 @@ server.listen(PORT, () => {
         subscribe,
         onConnect: (_, __) => console.log("Client connected!"),
         onDisconnect: (_, __) => console.log("Client disconnet!"),
-        onOperation: (_, __) => console.log("Client Operation!"),
     }, {
         server: server,
         path: '/subscriptions',
     });
 
     console.log(
-        `Running a GraphQL API server with subscriptions at http://localhost:${PORT}/graphql`,
+        `Running a GraphQL API server with subscriptions at http://localhost:${PORT}/graphiql`,
     );
 });
