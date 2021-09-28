@@ -28,7 +28,8 @@ const resolvers = {
   },
   Mutation: {
     addChannel: (root, args, context) => {
-      // console.log(context.req.isAuth);
+      console.log(args)
+      console.log(context.req.isAuth);
       const newChannel = {
         id: nextId++,
         name: args.name
