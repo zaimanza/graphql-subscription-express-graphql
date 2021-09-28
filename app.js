@@ -61,7 +61,7 @@ app.use(
     (req, res) => {
         graphqlHTTP({
             schema,
-            // graphiql: true,
+            graphiql: true,
             context: {
                 req,
                 res,
