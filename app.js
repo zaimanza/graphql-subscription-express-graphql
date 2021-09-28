@@ -40,7 +40,7 @@ const PORT = process.env.PORT || 4000;
 
 const checkHost = (hostPort) => {
     if (hostPort) {
-        return os.hostname();
+        return 'hdmerchantbackend.herokuapp.com';
     }
     return `localhost:${PORT}`;
 }
