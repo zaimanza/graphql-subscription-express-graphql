@@ -40,28 +40,27 @@ app.use(cors({
     credentials: true
 }));
 
-// app.use(
-//     "/graphql",
-//     (req, res) => {
-//         graphqlHTTP({
-//             schema,
-//             rootValue,
-//             graphiql: {
-//                 endpointURL: '/graphql',
-//                 subscriptionEndpoint: subscriptionEndpoint,
-//             },
-//         })(req, res);
-//     });
-
 app.use(
-    '/graphql',
+    "/graphql",
     (req, res) => {
-        graphqlExpress({
+        graphqlHTTP({
             schema,
             rootValue,
+            // graphiql: {
+            //     subscriptionEndpoint: subscriptionEndpoint,
+            // },
         })(req, res);
-    }
-);
+    });
+
+// app.use(
+//     '/graphql',
+//     (req, res) => {
+//         graphqlExpress({
+//             schema,
+//             rootValue,
+//         })(req, res);
+//     }
+// );
 
 app.use(
     '/graphiql',
