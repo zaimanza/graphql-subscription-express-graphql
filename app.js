@@ -84,24 +84,24 @@ server.listen(PORT, () => {
     console.log(`GraphQL Server is now running on http://${url}/graphiql`);
 
     // Set up the WebSocket for handling GraphQL subscriptions.
-    // new SubscriptionServer({
-    //     execute,
-    //     subscribe,
-    //     schema,
-    //     onConnect: () => console.log("Client connected!")
-    // }, {
-    //     server: server,
-    //     path: '/subscriptions',
-    // });
-
-    const wsServer = new ws.Server({
-        server: server,
-        path: '/graphql',
-    });
-
-    useServer({
+    new SubscriptionServer({
         execute,
         subscribe,
         schema,
-    }, wsServer);
+        onConnect: () => console.log("Client connected!")
+    }, {
+        server: server,
+        path: '/subscriptions',
+    });
+
+    // const wsServer = new ws.Server({
+    //     server: server,
+    //     path: '/graphql',
+    // });
+
+    // useServer({
+    //     execute,
+    //     subscribe,
+    //     schema,
+    // }, wsServer);
 });
