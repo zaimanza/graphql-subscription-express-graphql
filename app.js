@@ -55,8 +55,9 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors({
-    origin: true,
-    credentials: true
+    origin: 'https://studio.apollographql.com',
+    credentials: true,
+    methods: 'POST',
 }));
 app.use(rootAuth);
 app.use(function (req, res, next) {
