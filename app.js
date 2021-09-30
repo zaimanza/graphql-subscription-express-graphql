@@ -68,22 +68,12 @@ async function startServer() {
         introspection: true,
         playground: true,
         plugins: [
-            // ApolloServerPluginLandingPageGraphQLPlayground(),
+            ApolloServerPluginLandingPageGraphQLPlayground(),
+            // ApolloServerPluginLandingPageProductionDefault({
+            //     graphRef: "my-graph-id@my-graph-variant",
+            //     footer: false,
+            // }), 
             {
-                async serverlandingPage() {
-
-                    if (process.env.NODE_ENV === 'production') {
-                        return ApolloServerPluginLandingPageProductionDefault({
-                            graphRef: "my-graph-id@my-graph-variant",
-                            footer: false,
-                        });
-                    } else {
-                        return ApolloServerPluginLandingPageLocalDefault({
-                            footer: false
-                        });
-                    }
-                }
-            }, {
                 async serverWillStart() {
                     return {
                         async drainServer() {
