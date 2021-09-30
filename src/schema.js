@@ -1,12 +1,15 @@
 const {
   makeExecutableSchema
 } = require('@graphql-tools/schema');
+const {
+  gql,
+} = require('apollo-server-express');
 
 const {
   resolvers
 } = require('./resolvers');
 
-const typeDefs = `
+const typeDefs = gql`
     type Channel {
       id: ID!               
       name: String
