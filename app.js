@@ -54,30 +54,30 @@ const url = checkHost(process.env.PORT);
 const app = express();
 
 app.use(bodyParser.json());
-app.use(cors({
-    origin: 'https://studio.apollographql.com',
-    credentials: true,
-    methods: 'POST',
-}));
+// app.use(cors({
+//     origin: 'https://studio.apollographql.com',
+//     credentials: true,
+//     methods: 'POST',
+// }));
 app.use(rootAuth);
-app.use(function (req, res, next) {
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader(
-        "Access-Control-Allow-Origin",
-        "https://studio.apollographql.com"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Methods, Access-Control-Allow-Origin, Access-Control-Allow-Credentials, Access-Control-Allow-Headers"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "POST, GET, PUT, PATCH, DELETE, OPTIONS, HEAD"
-    );
+// app.use(function (req, res, next) {
+//     res.setHeader("Access-Control-Allow-Credentials", "true");
+//     res.setHeader(
+//         "Access-Control-Allow-Origin",
+//         "https://studio.apollographql.com"
+//     );
+//     res.setHeader(
+//         "Access-Control-Allow-Headers",
+//         "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Methods, Access-Control-Allow-Origin, Access-Control-Allow-Credentials, Access-Control-Allow-Headers"
+//     );
+//     res.setHeader(
+//         "Access-Control-Allow-Methods",
+//         "POST, GET, PUT, PATCH, DELETE, OPTIONS, HEAD"
+//     );
 
-    // Pass to next layer of middleware
-    next();
-});
+//     // Pass to next layer of middleware
+//     next();
+// });
 
 var server = null;
 
@@ -123,7 +123,6 @@ async function startServer() {
     await server.start();
     server.applyMiddleware({
         app,
-        cors: false,
     });
 }
 
