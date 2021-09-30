@@ -90,7 +90,7 @@ async function startServer() {
             // ApolloServerPluginLandingPageGraphQLPlayground(),
             {
                 async serverLandingPage() {
-                    if (process.env.NODE_ENV == 'production') {
+                    if (process.env.NODE_ENV === 'production') {
                         return ApolloServerPluginLandingPageProductionDefault({
                             graphRef: "My-Graph-2-wtim1@current",
                             footer: false,
