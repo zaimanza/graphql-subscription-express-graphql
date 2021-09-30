@@ -60,6 +60,8 @@ var server = null;
 async function startServer() {
     server = new ApolloServer({
         schema,
+        introspection: true,
+        playground: true,
         plugins: [{
             async serverWillStart() {
                 return {
