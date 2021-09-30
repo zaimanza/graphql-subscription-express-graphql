@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/zaimanza/graphql-subscription-express-graphql#readme",
   "devDependencies": {
+    "@apollo/rover": "^0.3.0",
     "nodemon": "^2.0.13"
   },
   "dependencies": {

@@ -54,11 +54,10 @@ const url = checkHost(process.env.PORT);
 const app = express();
 
 app.use(bodyParser.json());
-// app.use(cors({
-//     origin: 'https://studio.apollographql.com',
-//     credentials: true,
-//     methods: 'POST',
-// }));
+app.use(cors({
+    origin: '*',
+    credentials: true,
+}));
 app.use(rootAuth);
 // app.use(function (req, res, next) {
 //     res.setHeader("Access-Control-Allow-Credentials", "true");
