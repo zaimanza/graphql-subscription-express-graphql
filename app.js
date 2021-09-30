@@ -18,7 +18,8 @@ const {
     buildSchema
 } = require('graphql');
 const {
-    createServer
+    createServer,
+    setHeader,
 } = require('http');
 const ws = require('ws');
 const {
@@ -54,10 +55,29 @@ app.use(cors({
     credentials: true
 }));
 app.use(rootAuth);
+app.use(function (req, res, next) {
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+        "Access-Control-Allow-Origin",
+        "https://studio.apollographql.com"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Methods, Access-Control-Allow-Origin, Access-Control-Allow-Credentials, Access-Control-Allow-Headers"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "POST, GET, PUT, PATCH, DELETE, OPTIONS, HEAD"
+    );
+    if (req.method === "OPTIONS") {
+        res.end();
+        return false;
+    }
+});
 
 var server = null;
 
-async function startServer() {
+async function startServer(req, res) {
     server = new ApolloServer({
         schema,
         introspection: true,
@@ -79,9 +99,9 @@ async function startServer() {
             res,
         }),
     });
+
     await server.start();
     server.applyMiddleware({
-        path: '/graphql',
         app
     });
 }
