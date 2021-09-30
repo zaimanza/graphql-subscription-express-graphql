@@ -3,6 +3,11 @@ var {
     withFilter,
 } = require('./pubsubs');
 const CHANNEL_ADDED_TOPIC = 'newChannel';
+const {
+    ApolloServerPluginLandingPageLocalDefault,
+    ApolloServerPluginLandingPageProductionDefault,
+    ApolloServerPluginLandingPageGraphQLPlayground,
+} = require("apollo-server-core");
 
 const express = require('express');
 const cors = require('cors');
@@ -18,8 +23,7 @@ const {
     buildSchema
 } = require('graphql');
 const {
-    createServer,
-    setHeader,
+    createServer
 } = require('http');
 const ws = require('ws');
 const {
@@ -55,42 +59,40 @@ app.use(cors({
     credentials: true
 }));
 app.use(rootAuth);
-app.use(function (req, res, next) {
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader(
-        "Access-Control-Allow-Origin",
-        "https://studio.apollographql.com"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Methods, Access-Control-Allow-Origin, Access-Control-Allow-Credentials, Access-Control-Allow-Headers"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "POST, GET, PUT, PATCH, DELETE, OPTIONS, HEAD"
-    );
-    if (req.method === "OPTIONS") {
-        res.end();
-        return false;
-    }
-});
 
 var server = null;
 
-async function startServer(req, res) {
+async function startServer() {
     server = new ApolloServer({
         schema,
         introspection: true,
         playground: true,
-        plugins: [{
-            async serverWillStart() {
-                return {
-                    async drainServer() {
-                        subscriptionServer.close();
+        plugins: [
+            // ApolloServerPluginLandingPageGraphQLPlayground(),
+            {
+                async serverlandingPage() {
+
+                    if (process.env.NODE_ENV === 'production') {
+                        return ApolloServerPluginLandingPageProductionDefault({
+                            graphRef: "my-graph-id@my-graph-variant",
+                            footer: false,
+                        });
+                    } else {
+                        return ApolloServerPluginLandingPageLocalDefault({
+                            footer: false
+                        });
                     }
-                };
+                }
+            }, {
+                async serverWillStart() {
+                    return {
+                        async drainServer() {
+                            subscriptionServer.close();
+                        },
+                    };
+                },
             }
-        }],
+        ],
         context: ({
             req,
             res
@@ -99,7 +101,6 @@ async function startServer(req, res) {
             res,
         }),
     });
-
     await server.start();
     server.applyMiddleware({
         app
